@@ -1,0 +1,10 @@
+# The WEBSITE (Django). The eight services have their own requirements in services/<name>/requirements.txt,
+# so this image stays small: no numpy, scikit-learn, reportlab or Earth Engine in here.
+Django>=5.1,<5.3
+djangorestframework>=3.15
+python-dotenv>=1.0
+psycopg2-binary>=2.9
+gunicorn>=22.0
+requests>=2.32
+django-storages[azure]>=1.14
+psutil>=5.9

@@ -1,0 +1,13 @@
+# EVERYTHING on one laptop: the website plus all eight services (SERVICES_MODE=inprocess runs the services inside Django,
+# scripts/run_services.py runs them as separate processes). Use this for development and for the tests.
+#     pip install -r requirements-dev.txt
+-r requirements.txt
+Flask>=3.0,<4
+numpy>=1.26
+pandas>=2.0
+scikit-learn>=1.5
+joblib>=1.4
+reportlab>=4.2
+Pillow>=10.0
+# Google Earth Engine: needed only when USE_FAKE_DATA=False
+earthengine-api>=0.1.400
