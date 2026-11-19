@@ -1,0 +1,67 @@
+{% extends "base.html" %}
+{% block title %}Plans &amp; pricing · TerraRisk AI{% endblock %}
+{% block content %}
+<section class="mx-auto max-w-[1200px] px-6 pt-14 text-center">
+  <p class="text-sm font-bold uppercase tracking-widest text-mint-400">Plans &amp; subscription</p>
+  <h1 class="mt-3 text-4xl font-extrabold tracking-tight sm:text-5xl">Choose how many analyses you need</h1>
+  <p class="mx-auto mt-4 max-w-2xl text-lg text-slate-300">One search is one successful AI diagnosis of a parcel. Search credits never expire, and a failed analysis costs nothing.</p>
+  {% if user.is_authenticated %}
+    <div class="mx-auto mt-8 inline-flex items-center gap-3 rounded-full border border-mint-400/40 bg-mint-400/10 px-5 py-2.5 text-mint-300">
+      <span>Your balance:</span>
+      <strong>{% if user.has_unlimited %}Unlimited until {{ user.unlimited_until|date:"M j, Y" }}{% else %}{{ user.free_searches }} search{{ user.free_searches|pluralize:"es" }}{% endif %}</strong>
+    </div>
+  {% endif %}
+</section>
+
+<section class="mx-auto mt-14 grid max-w-[1200px] gap-6 px-6 sm:grid-cols-2 lg:grid-cols-3">
+  <!-- Free -->
+  <article class="glass flex flex-col p-7">
+    <h2 class="text-lg font-bold">Free</h2>
+    <p class="mt-1 text-sm text-slate-400">Every account starts here.</p>
+    <p class="mt-6 flex items-baseline gap-2"><span class="text-5xl font-extrabold">{{ free_searches }}</span><span class="text-slate-300">analyses</span></p>
+    <p class="mt-2 text-2xl font-bold text-mint-400">$0</p>
+    <p class="text-sm text-slate-400">No card needed</p>
+    <ul class="mt-6 flex-1 space-y-2 text-sm text-slate-300">
+      <li class="flex gap-2"><span class="text-mint-400">&#10003;</span> Interactive map and AI diagnosis</li>
+      <li class="flex gap-2"><span class="text-mint-400">&#10003;</span> Saved parcels</li>
+      <li class="flex gap-2"><span class="text-mint-400">&#10003;</span> PDF Resilience Certificate</li>
+    </ul>
+    {% if user.is_authenticated %}
+      <span class="btn btn-ghost mt-8 cursor-default opacity-60">Included with your account</span>
+    {% else %}
+      <a href="{% url 'signup' %}" class="btn btn-ghost mt-8">Create free account</a>
+    {% endif %}
+  </article>
+
+  {% for plan in plans %}
+  <article class="glass relative flex flex-col p-7{% if plan.popular %} is-popular{% endif %}{% if plan.is_unlimited %} is-unlimited{% endif %}">
+    {% if plan.popular %}<span class="absolute -top-3 left-1/2 -translate-x-1/2 rounded-full bg-mint-400 px-4 py-1 text-xs font-extrabold uppercase tracking-wide text-ink-950">Most popular</span>{% endif %}
+    <h2 class="text-lg font-bold">{{ plan.name }}</h2>
+    <p class="mt-1 text-sm text-slate-400">{{ plan.tagline }}</p>
+    <p class="mt-6 flex items-baseline gap-2">
+      <span class="text-5xl font-extrabold">{% if plan.is_unlimited %}&infin;{% else %}{{ plan.searches }}{% endif %}</span>
+      <span class="text-slate-300">{% if plan.is_unlimited %}analyses for {{ unlimited_days }} days{% else %}analyses{% endif %}</span>
+    </p>
+    <p class="mt-2 text-2xl font-bold text-mint-400">${{ plan.price }}</p>
+    <p class="text-sm text-slate-400">{% if plan.per_search %}${{ plan.per_search }} per analysis{% else %}Best for heavy use{% endif %}</p>
+    <ul class="mt-6 flex-1 space-y-2 text-sm text-slate-300">
+      <li class="flex gap-2"><span class="text-mint-400">&#10003;</span> Everything in Free</li>
+      <li class="flex gap-2"><span class="text-mint-400">&#10003;</span> {% if plan.is_unlimited %}No limit on searches{% else %}Credits never expire{% endif %}</li>
+      <li class="flex gap-2"><span class="text-mint-400">&#10003;</span> Advice tuned to your persona</li>
+      <li class="flex gap-2"><span class="text-mint-400">&#10003;</span> Email support</li>
+    </ul>
+    <a href="{% url 'checkout' plan.key %}" class="btn mt-8 {% if plan.popular %}btn-mint{% else %}btn-ghost{% endif %}">Choose {{ plan.name }}</a>
+  </article>
+  {% endfor %}
+</section>
+
+<section class="mx-auto mt-20 max-w-[800px] px-6">
+  <h2 class="mb-6 text-2xl font-bold">Good to know</h2>
+  <div class="space-y-3">
+    <details class="glass group p-5"><summary class="cursor-pointer font-semibold">What counts as one search?</summary><p class="mt-3 text-slate-300">Each time you press Run AI Diagnosis and the analysis succeeds, one search is used. If satellite data cannot be read, nothing is deducted.</p></details>
+    <details class="glass group p-5"><summary class="cursor-pointer font-semibold">Do my searches expire?</summary><p class="mt-3 text-slate-300">No. Credits stack when you buy more and never expire. The Unlimited plan lasts {{ unlimited_days }} days and does not renew automatically; buying it again extends your period.</p></details>
+    <details class="glass group p-5"><summary class="cursor-pointer font-semibold">Is payment real?</summary><p class="mt-3 text-slate-300">This is a course project, so checkout runs in demo mode: your plan is activated but no money or card details are taken.</p></details>
+    <details class="glass group p-5"><summary class="cursor-pointer font-semibold">Need something else?</summary><p class="mt-3 text-slate-300">Email <a class="text-mint-400 underline" href="mailto:{{ SITE.email }}">{{ SITE.email }}</a> or ask the assistant in the corner.</p></details>
+  </div>
+</section>
+{% endblock %}
