@@ -1,0 +1,13 @@
+{% extends "registration/auth_base.html" %}
+{% block title %}Sign in · TerraRisk AI{% endblock %}
+{% block form_card %}
+  <h1 class="text-2xl font-extrabold">Welcome back</h1>
+  <form method="post" class="mt-6 space-y-4" novalidate>
+    {% csrf_token %}
+    {% if form.non_field_errors %}<p class="rounded-lg bg-red-50 p-3 text-sm text-red-700">Email or password is incorrect. Check both and try again.</p>{% endif %}
+    {% for field in form %}{% include "components/form_field.html" with field=field %}{% endfor %}
+    <input type="hidden" name="next" value="{{ next }}">
+    <button class="btn btn-mint w-full !bg-emerald-500 !text-white !shadow-none">Sign in</button>
+  </form>
+  <p class="mt-5 text-center text-sm text-slate-500">New here? <a class="font-semibold text-slate-900 underline" href="{% url 'signup' %}">Create a free account</a></p>
+{% endblock %}

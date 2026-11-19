@@ -1,0 +1,45 @@
+{% extends "registration/auth_base.html" %}
+{% block title %}Create your account · TerraRisk AI{% endblock %}
+
+{% block left_panel %}
+<img id="persona-img" src="{{ selected.image }}" alt="" class="w-full max-w-lg rounded-2xl shadow-2xl ring-1 ring-white/10">
+<h2 id="persona-headline" class="mt-9 max-w-lg text-3xl font-bold leading-tight">{{ selected.headline }}</h2>
+<p id="persona-blurb" class="mt-3 max-w-md text-slate-300">{{ selected.blurb }}</p>
+{% endblock %}
+
+{% block form_card %}
+  <a href="{% url 'landing' %}" class="mb-5 inline-flex items-center gap-2 text-sm font-semibold text-slate-500 hover:text-slate-900 lg:hidden">&larr; Back to home</a>
+  <div class="mb-5 flex items-center gap-3 rounded-xl bg-slate-50 p-3 lg:hidden">
+    <img id="persona-thumb" src="{{ selected.image }}" alt="" class="h-12 w-16 rounded-lg object-cover">
+    <div><p class="text-xs text-slate-500">Signing up as</p><p id="persona-title" class="font-bold">{{ selected.title }}</p></div>
+  </div>
+  <h1 class="text-2xl font-extrabold">Create Your Free Account</h1>
+  <p class="mt-1 text-sm text-slate-500">Includes {{ free_searches }} free analyses. No card needed.</p>
+  <form method="post" class="mt-6 space-y-4" novalidate>
+    {% csrf_token %}
+    {% for field in form %}{% include "components/form_field.html" with field=field %}{% endfor %}
+    <p class="text-xs text-slate-500">By creating an account you agree to the <a class="underline" href="{% url 'terms' %}" target="_blank">Terms of Service</a> and <a class="underline" href="{% url 'privacy' %}" target="_blank">Privacy Policy</a>.</p>
+    <button class="btn btn-block !bg-emerald-500 !text-white !shadow-none">Create Free Account</button>
+  </form>
+  <p class="mt-5 text-center text-sm text-slate-500">Already have an account? <a class="font-semibold text-slate-900 underline" href="{% url 'login' %}">Sign in</a></p>
+
+  {{ persona_data|json_script:"persona-data" }}
+  <script>
+    /* When the persona dropdown changes, swap the picture and text so the person sees what they chose. */
+    (function () {
+      var select = document.getElementById("id_persona");
+      if (!select) return;
+      var data = JSON.parse(document.getElementById("persona-data").textContent);
+      function update() {
+        var p = data[select.value];
+        if (!p) return;
+        document.getElementById("persona-img").src = p.image;
+        document.getElementById("persona-thumb").src = p.image;
+        document.getElementById("persona-headline").textContent = p.headline;
+        document.getElementById("persona-blurb").textContent = p.blurb;
+        document.getElementById("persona-title").textContent = p.title;
+      }
+      select.addEventListener("change", update);
+    })();
+  </script>
+{% endblock %}
