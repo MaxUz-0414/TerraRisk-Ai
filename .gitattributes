@@ -1,0 +1,20 @@
+# Line endings: store LF in the repository and check out LF everywhere (Windows included), so nobody gets a diff full of
+# invisible changes and shell scripts and Dockerfiles keep working.
+* text=auto eol=lf
+
+# Data files: keep them byte for byte (they came with Windows line endings; changing them would change the dataset files).
+*.csv -text
+
+# Binary files: never touch them.
+*.pkl binary
+*.xlsx binary
+*.pptx binary
+*.docx binary
+*.pdf binary
+*.png binary
+*.jpg binary
+*.jpeg binary
+*.gif binary
+*.ico binary
+*.woff binary
+*.woff2 binary
