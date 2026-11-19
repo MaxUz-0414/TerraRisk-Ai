@@ -1,0 +1,1 @@
+# the advice service only needs the shared requirements (it calls the Gemini REST API with requests)
