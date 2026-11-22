@@ -1,0 +1,22 @@
+# Operating system and editor files
+.DS_Store
+Thumbs.db
+desktop.ini
+.idea/
+.vscode/
+*.swp
+
+# Secrets and local data: never commit these, wherever they are
+.env
+*.env
+*.pem
+*.key
+gee-key.json
+db.sqlite3
+
+# Python and Node
+__pycache__/
+*.pyc
+.venv/
+venv/
+node_modules/
