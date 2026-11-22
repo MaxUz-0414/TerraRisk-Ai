@@ -1,4 +1,0 @@
-numpy>=1.26
-Pillow>=10.0
-# Google Earth Engine: used only when USE_FAKE_DATA=False
-earthengine-api>=0.1.400
