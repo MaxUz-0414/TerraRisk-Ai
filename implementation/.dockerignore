@@ -1,0 +1,16 @@
+.venv/
+.git/
+.github/
+__pycache__/
+*.pyc
+db.sqlite3
+media/
+staticfiles/
+.env
+.local-services/
+node_modules/
+secrets/*
+!secrets/.gitkeep
+services/tests/
+_backup_*
+_stage/
